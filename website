@@ -1,99 +1,434 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Luqks</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Luqks – Half Here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0d0d0d;
-      color: white;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300&family=Cormorant+Garamond:wght@500&display=swap" rel="stylesheet">
 
-    header {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4') center/cover;
-    }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
 
-    header h1 {
-      font-size: 4rem;
-      letter-spacing: 4px;
-    }
+body{
+  font-family:'Manrope',sans-serif;
+  background:#05070a;
+  color:white;
+  overflow-x:hidden;
+}
 
-    section {
-      padding: 60px 20px;
-      max-width: 900px;
-      margin: auto;
-    }
+/* HEADINGS */
+h1,h2{
+  font-family:'Cormorant Garamond',serif;
+  letter-spacing:8px;
+}
 
-    .gallery img {
-      width: 100%;
-      margin-bottom: 20px;
-      border-radius: 10px;
-    }
+/* NAV */
+.nav{
+  position:fixed;
+  top:0;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  padding:20px;
+  z-index:20;
+  background:rgba(5,7,10,0.4);
+  backdrop-filter:blur(10px);
+}
+.nav a{
+  color:#aaa;
+  text-decoration:none;
+  font-size:0.8rem;
+  letter-spacing:2px;
+}
+.nav a:hover{color:white;}
 
-    footer {
-      text-align: center;
-      padding: 30px;
-      background: #111;
-    }
+/* INTRO */
+.intro{
+  position:fixed;
+  inset:0;
+  background:#05070a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+  animation:fadeOut 2s ease 3s forwards;
+}
+@keyframes fadeOut{to{opacity:0;visibility:hidden;}}
 
-    a {
-      color: #aaa;
-      text-decoration: none;
-    }
+/* FOG */
+.fog{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+}
+.fog::before,.fog::after{
+  content:"";
+  position:absolute;
+  width:200%;
+  height:200%;
+  background:radial-gradient(circle,rgba(255,255,255,0.04),transparent 60%);
+  animation:fogMove 60s linear infinite;
+}
+.fog::after{animation-direction:reverse;opacity:0.5;}
+@keyframes fogMove{
+  from{transform:translate(-25%,-25%);}
+  to{transform:translate(0,0);}
+}
 
-    a:hover {
-      color: white;
-    }
-  </style>
+/* HERO */
+.hero{
+  height:100vh;
+  background:url('https://i.imgur.com/9U2F6UD.jpg') center/cover;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  position:relative;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+}
+.hero-content{position:relative;z-index:5;}
+.hero h1{font-size:4.5rem;letter-spacing:12px;}
+.hero p{opacity:0.5;letter-spacing:3px;}
+
+/* SECTIONS */
+.section{
+  padding:100px 20px;
+  max-width:900px;
+  margin:auto;
+  text-align:center;
+  opacity:0;
+  transform:translateY(40px);
+  transition:1.2s;
+  position:relative;
+  z-index:5;
+}
+.section.visible{opacity:1;transform:translateY(0);}
+
+/* PLAYER */
+.player{
+  margin-top:40px;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 0 60px rgba(255,255,255,0.08);
+}
+
+/* TRACKLIST */
+.tracklist{margin-top:30px;}
+.tracklist p{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;
+  letter-spacing:2px;
+  margin:12px 0;
+  color:rgba(255,255,255,0.4);
+  cursor:pointer;
+  transition:0.35s;
+  position:relative;
+}
+.tracklist p::before{
+  content:"";
+  position:absolute;
+  left:-20px;
+  top:50%;
+  width:0;
+  height:1px;
+  background:rgba(255,255,255,0.6);
+  transition:0.35s;
+}
+.tracklist p:hover{
+  color:white;
+  transform:translateX(10px);
+  letter-spacing:4px;
+  text-shadow:0 0 10px rgba(255,255,255,0.25);
+}
+.tracklist p:hover::before{width:12px;}
+
+/* IMAGES */
+.split{
+  display:flex;
+  justify-content:center;
+  gap:80px;
+  padding:100px 20px;
+  flex-wrap:wrap;
+  z-index:5;
+  position:relative;
+}
+.image-block{
+  text-align:center;
+  animation:float 6s ease-in-out infinite;
+}
+.image-block:nth-child(2){animation-delay:2s;}
+@keyframes float{50%{transform:translateY(-10px);}}
+
+.image-block img{
+  width:240px;
+  height:240px;
+  object-fit:cover;
+  border-radius:14px;
+  padding:10px;
+  background:rgba(255,255,255,0.04);
+  box-shadow:0 0 60px rgba(255,255,255,0.06);
+  transition:0.4s;
+}
+.image-block img:hover{transform:scale(1.05);}
+
+.caption{
+  margin-top:12px;
+  font-size:0.8rem;
+  letter-spacing:2px;
+  color:#777;
+}
+
+/* ABOUT */
+.about-text{
+  color:#aaa;
+  line-height:1.7;
+  max-width:600px;
+  margin:auto;
+}
+
+/* SONG PAGE */
+.song-page{
+  position:fixed;
+  inset:0;
+  background:#05070a;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  opacity:0;
+  pointer-events:none;
+  transition:0.6s;
+  z-index:9999;
+}
+.song-page::before{
+  content:"";
+  position:absolute;
+  inset:-50%;
+  z-index:-1;
+  filter:blur(140px);
+  opacity:0.2;
+  animation:moveBG 35s linear infinite;
+}
+
+/* COLORS */
+#song1::before{background:radial-gradient(circle,#3a6073,transparent);}
+#song2::before{background:radial-gradient(circle,#2a5298,transparent);}
+#song3::before{background:radial-gradient(circle,#203a43,transparent);}
+#song4::before{background:radial-gradient(circle,#734b6d,transparent);}
+#song5::before{background:radial-gradient(circle,#71b280,transparent);}
+#song6::before{background:radial-gradient(circle,#2c5364,transparent);}
+#song7::before{background:radial-gradient(circle,#414345,transparent);}
+#song8::before{background:radial-gradient(circle,#b29f94,transparent);}
+#song9::before{background:radial-gradient(circle,#243b55,transparent);}
+
+@keyframes moveBG{
+  0%{transform:translate(-10%,-10%) scale(1);}
+  50%{transform:translate(10%,10%) scale(1.15);}
+  100%{transform:translate(-10%,-10%) scale(1);}
+}
+
+.song-page.active{opacity:1;pointer-events:auto;}
+
+/* TEXT FIRST */
+.song-page h2,.song-page p{
+  opacity:0;
+  transform:translateY(10px);
+  transition:0.8s;
+}
+
+.song-page iframe{
+  margin-top:20px;
+  border-radius:12px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:0.8s;
+  transition-delay:1s;
+}
+
+.song-page.active h2,
+.song-page.active p{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.song-page.active iframe{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* BACK */
+.back-btn{
+  margin-top:40px;
+  padding:10px 20px;
+  border:1px solid rgba(255,255,255,0.2);
+  color:#aaa;
+  cursor:pointer;
+}
+.back-btn:hover{color:white;}
+
+footer{text-align:center;padding:40px;opacity:0.4;}
+
+</style>
 </head>
 
 <body>
 
-<header>
-  <div>
-    <h1>LUQKS</h1>
-    <p>Artist • Creator • Vision</p>
-  </div>
-</header>
+<div class="intro"><h1>LUQKS</h1></div>
+<div class="fog"></div>
 
-<section>
-  <h2>About</h2>
-  <p>
-    Luqks is an artist exploring sound, visuals, and emotion.
-    This space showcases creative work and latest releases.
-  </p>
-</section>
+<nav class="nav">
+<a href="#">Home</a>
+<a href="#music">Music</a>
+<a href="#about">About</a>
+</nav>
 
-<section>
-  <h2>Gallery</h2>
-  <div class="gallery">
-    <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f">
-    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee">
-  </div>
-</section>
+<div class="hero">
+<div class="hero-content">
+<h1>LUQKS</h1>
+<p>half here — out now</p>
+</div>
+</div>
 
-<section>
-  <h2>Connect</h2>
-  <p>
-    Follow on 
-    <a href="#">Instagram</a> |
-    <a href="#">Spotify</a> |
-    <a href="#">SoundCloud</a>
-  </p>
-</section>
+<div class="section" id="music">
+<h2>Half Here</h2>
 
-<footer>
-  <p>© 2026 Luqks</p>
-</footer>
+<div class="player">
+<iframe src="https://open.spotify.com/embed/album/283FKpgvqWuoCVRPNzaRFO" width="100%" height="380"></iframe>
+</div>
+
+<div class="tracklist">
+<p onclick="openSong(1)">1. buoyant</p>
+<p onclick="openSong(2)">2. surge</p>
+<p onclick="openSong(3)">3. submerge</p>
+<p onclick="openSong(4)">4. together</p>
+<p onclick="openSong(5)">5. wander</p>
+<p onclick="openSong(6)">6. wet circuit</p>
+<p onclick="openSong(7)">7. sighteer's lullaby</p>
+<p onclick="openSong(8)">8. september</p>
+<p onclick="openSong(9)">9. haze</p>
+</div>
+</div>
+
+<div class="split">
+<div class="image-block">
+<img src="https://i.imgur.com/9U2F6UD.jpg">
+<div class="caption">feeling of september</div>
+</div>
+<div class="image-block">
+<img src="https://i.imgur.com/NmLQNKf.png">
+<div class="caption">half here - a distant place</div>
+</div>
+</div>
+
+<div class="section" id="about">
+<h2>About</h2>
+<p class="about-text">
+Luqks's first album is Half Here, encapsulating the feeling of drifting off,
+or just not fully being in the moment. It encorporates the feeling of memory and what's to come.
+He has plans to contribute to Tomorrowland in the future while managing the different genres.
+</p>
+</div>
+
+<footer>© 2026 Luqks</footer>
+
+```html
+<!-- REPLACE ONLY YOUR SONG PAGES WITH THIS (everything else stays the same) -->
+
+<div class="song-page" id="song1">
+<h2>buoyant</h2>
+<p>Buoyant is a piece that made me think of how you can just float above all your problems, without a care in the world you can live your life the way you want to.</p>
+<iframe src="https://open.spotify.com/embed/album/283FKpgvqWuoCVRPNzaRFO" width="300" height="80"></iframe>
+<div class="back-btn" onclick="closeSongs()">back</div>
+</div>
+
+<div class="song-page" id="song2">
+<h2>surge</h2>
+<p>Surge is a the power piece, I just saw the pulse would just drive you into space, like for some it would send them off track, however no matter how many pulses they throw, the song plays.</p>
+<iframe src="https://open.spotify.com/embed/album/283FKpgvqWuoCVRPNzaRFO" width="300" height="80"></iframe>
+<div class="back-btn" onclick="closeSongs()">back</div>
+</div>
+
+<div class="song-page" id="song3">
+<h2>submerge</h2>
+<p>Submerge is a piece that holds tenseness. Something very uneasy and I myself find underwater places very unsettling, leaving that piece to remind me of that.</p>
+<iframe src="https://open.spotify.com/embed/album/283FKpgvqWuoCVRPNzaRFO" width="300" height="80"></iframe>
+<div class="back-btn" onclick="closeSongs()">back</div>
+</div>
+
+<div class="song-page" id="song4">
+<h2>together</h2>
+<p>Together is the love behind this piece, I love how nostalgic it sounds, almost like a lullaby, but has this unexplainable warmth.</p>
+<iframe src="https://open.spotify.com/embed/album/283FKpgvqWuoCVRPNzaRFO" width="300" height="80"></iframe>
+<div class="back-btn" onclick="closeSongs()">back</div>
+</div>
+
+<div class="song-page" id="song5">
+<h2>wander</h2>
+<p>Wander is the piece I chose to demonstrate exploring. Exploring is never easy, as you would have to go around to uncharted territory, or discover new things, it always had this distant tone, but this piano feels different...</p>
+<iframe src="https://open.spotify.com/embed/album/283FKpgvqWuoCVRPNzaRFO" width="300" height="80"></iframe>
+<div class="back-btn" onclick="closeSongs()">back</div>
+</div>
+
+<div class="song-page" id="song6">
+<h2>wet circuit</h2>
+<p>Wet Circuit has all these chords and trills to it with many SFX/ear candy to it, making it feel more dystopian than it should. Like a nights drive in a road you've never been to before.</p>
+<iframe src="https://open.spotify.com/embed/album/283FKpgvqWuoCVRPNzaRFO" width="300" height="80"></iframe>
+<div class="back-btn" onclick="closeSongs()">back</div>
+</div>
+
+<div class="song-page" id="song7">
+<h2>sightseer's lullaby</h2>
+<p>Sightseer's Lullaby is a lullaby that I thought would sleep to. This song shows the adventure from uncertainty to the highs and lows of any trip.</p>
+<iframe src="https://open.spotify.com/embed/album/283FKpgvqWuoCVRPNzaRFO" width="300" height="80"></iframe>
+<div class="back-btn" onclick="closeSongs()">back</div>
+</div>
+
+<div class="song-page" id="song8">
+<h2>september</h2>
+<p>September is my first piece of this album. If you are reading this, it was originally called "Distant", then later on "Distant2" as this was the 2nd model of the song. It has been many close friends and family's favourites of the bunch and I do hope it's yours too.</p>
+<iframe src="https://open.spotify.com/embed/album/283FKpgvqWuoCVRPNzaRFO" width="300" height="80"></iframe>
+<div class="back-btn" onclick="closeSongs()">back</div>
+</div>
+
+<div class="song-page" id="song9">
+<h2>haze</h2>
+<p>Haze really got a foggy picture in my mind, with this distant melody, a kick drum that sounds like it's echoing? Glorious pads? It's like a match made in the far murky lands only told in books.</p>
+<iframe src="https://open.spotify.com/embed/album/283FKpgvqWuoCVRPNzaRFO" width="300" height="80"></iframe>
+<div class="back-btn" onclick="closeSongs()">back</div>
+</div>
+
+
+<script>
+const sections=document.querySelectorAll('.section');
+function reveal(){
+const trigger=window.innerHeight*0.85;
+sections.forEach(s=>{
+if(s.getBoundingClientRect().top<trigger)s.classList.add('visible');
+});
+}
+window.addEventListener('scroll',reveal);
+window.addEventListener('load',reveal);
+
+function openSong(n){
+document.getElementById("song"+n).classList.add("active");
+document.body.style.overflow="hidden";
+}
+function closeSongs(){
+document.querySelectorAll('.song-page').forEach(p=>p.classList.remove('active'));
+document.body.style.overflow="auto";
+}
+</script>
 
 </body>
 </html>
+```
